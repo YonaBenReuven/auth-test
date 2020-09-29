@@ -1,9 +1,12 @@
-import { RoleAccessConfig } from '@hilma/auth-nest';
+import { AuthConfig } from '@hilma/auth-nest';
 
-export default () => ({
-	roleAccessConfig,
+export default (): AuthConfig => ({
 	auth: {
-		loginTTL: 18000,
+		ttl: {
+			Admin: 3.154e+10,
+			Customer: 3.154e+10
+		},
+
 		verification_email: {
 			welcome_to: "",
 			verifyPath: "",
@@ -11,22 +14,26 @@ export default () => ({
 			text: null,
 			logoDiv: null,
 			logoPath: null
-		}
+		},
+
+		secretOrKey: "asdfasdfasdfasdfasdfasdf"
 	},
-	app_name_he: "איך קוראים לפרויקט בעברית?"
+
+	app_name_he: "איך קוראים לפרויקט בעברית?",
+
+	roleAccessConfig: {
+		CUSTOMER: {
+			components: [
+				"CustomerHome"
+			],
+			defaultHomePage: "CustomerHome"
+		},
+		ADMIN: {
+			components: [
+				"AdminHome"
+			],
+			defaultHomePage: "AdminHome"
+		}
+	}
 });
 
-const roleAccessConfig: Record<string, RoleAccessConfig> = {
-	"CUSTOMER": {
-		"components": [
-			"CustomerHome"
-		],
-		"defaultHomePage": "CustomerHome"
-	},
-	"ADMIN": {
-		"components": [
-			"AdminHome"
-		],
-		"defaultHomePage": "AdminHome"
-	}
-};
