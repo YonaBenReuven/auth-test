@@ -35,7 +35,7 @@ const AddItem: React.FC<AddItemProps> = () => {
 		} catch (error) {
 			console.error(error);
 		}
-	}, [name, price, history]);
+	}, [name, price, history, authFetch]);
 
 	return (
 		<form onSubmit={handleSubmit} className={classes.layout}>

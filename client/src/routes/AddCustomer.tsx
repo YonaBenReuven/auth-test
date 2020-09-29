@@ -36,7 +36,7 @@ const AddCustomer: React.FC<AddCustomerProps> = () => {
 		} catch (error) {
 			console.error(error);
 		}
-	}, [name, username, password, history]);
+	}, [name, username, password, history, authFetch]);
 
 	return (
 		<form onSubmit={handleSubmit} className={classes.layout}>

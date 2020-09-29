@@ -25,7 +25,7 @@ const Login: React.FC<LoginProps> = () => {
 		const username = usernameRef.current?.value;
 		const password = passwordRef.current?.value;
 
-		await login({ username, password }, '/api/login');
+		await login('/api/login', { username, password });
 	}
 
 	return (

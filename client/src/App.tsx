@@ -18,5 +18,5 @@ const App: React.FC = () => (
 
 export default provide(
     Router,
-    [AuthProvider, { logoutOnUnauthorized: true }]
+    [AuthProvider, { logoutOnUnauthorized: true, accessTokenCookie: "klokloklo" }]
 )(App);

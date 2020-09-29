@@ -61,7 +61,7 @@ const CustomerListItem: React.FC<CustomerListItemProps> = () => {
 		} catch (error) {
 			console.error(error);
 		}
-	}, [params.customerId]);
+	}, [params.customerId, authFetch, history]);
 
 	if (!customer) return null;
 

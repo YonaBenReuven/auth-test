@@ -45,12 +45,12 @@ const ItemListItem: React.FC<ItemListItemProps> = () => {
 			await authFetch(`/api/item/update-item-price/${params.itemId}?operator=${operator}`, { method: "PATCH" });
 			setItem(item => item ? ({
 				...item,
-				price: operator == "dec" ? item.price - 1000 : item.price + 1000
+				price: operator === "dec" ? item.price - 1000 : item.price + 1000
 			}) : null);
 		} catch (error) {
 			console.error(error);
 		}
-	}, [params.itemId]);
+	}, [params.itemId, authFetch]);
 
 	const onDeleteClick = useCallback(async () => {
 		try {
@@ -61,7 +61,7 @@ const ItemListItem: React.FC<ItemListItemProps> = () => {
 		} catch (error) {
 			console.error(error);
 		}
-	}, [params.itemId]);
+	}, [params.itemId, authFetch, history]);
 
 	if (!item) return null;
 

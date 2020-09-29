@@ -16,7 +16,9 @@ export default (): AuthConfig => ({
 			logoPath: null
 		},
 
-		secretOrKey: "asdfasdfasdfasdfasdfasdf"
+		secretOrKey: "asdfasdfasdfasdfasdfasdf",
+
+		accessToken_cookie: "klokloklo"
 	},
 
 	app_name_he: "איך קוראים לפרויקט בעברית?",
