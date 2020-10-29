@@ -24,8 +24,7 @@ export class CustomerService {
 	}
 
 	async createCustomer(partialCustomer: DeepPartial<Customer>) {
-		const customerInstance = new Customer();
-		Object.assign(customerInstance, partialCustomer);
+		const customerInstance = this.customerRepository.create(partialCustomer);
 		const customer = await this.customerRepository.save(customerInstance);
 		return this.customerRepository
 			.createQueryBuilder('customer')

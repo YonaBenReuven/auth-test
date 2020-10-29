@@ -11,8 +11,7 @@ export class ItemService {
 	) { }
 
 	async createItem(partialItem: DeepPartial<Item>) {
-		const item = new Item();
-		Object.assign(item, partialItem);
+		const item = this.itemRepository.create(partialItem);
 		return this.itemRepository.save(item);
 	}
 
