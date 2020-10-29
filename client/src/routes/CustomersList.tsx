@@ -14,8 +14,8 @@ import IconButton from '@material-ui/core/IconButton';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import Axios from 'axios';
 import { useAsyncEffect } from '@hilma/tools';
-import { useAuthFetch } from '@hilma/auth';
 
 import { Title } from '../components';
 import { Customer } from '../types';
@@ -23,17 +23,16 @@ import { Customer } from '../types';
 interface CustomersListProps extends RouteComponentProps { }
 
 const CustomersList: React.FC<CustomersListProps> = () => {
+	console.log({...Axios})
 	const [customers, setCustomers] = useState<Customer[]>([]);
 
 	const match = useRouteMatch();
-
-	const authFetch = useAuthFetch();
 
 	const classes = useStyles();
 
 	useAsyncEffect(async () => {
 		try {
-			const customers = await authFetch('/api/customer/get-customers');
+			const { data: customers } = await Axios.get('/api/customer/get-customers');
 			setCustomers(customers);
 		} catch (error) {
 			console.error(error);

@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { useAuthFetch } from '@hilma/auth';
+import Axios from 'axios';
 import { useAsyncEffect } from '@hilma/tools';
 
 import { StoreItem } from '../components';
@@ -16,14 +16,12 @@ export interface MyItemsProps extends RouteComponentProps { }
 const MyItems: React.FC<MyItemsProps> = () => {
 	const [items, setItems] = useState<Item[]>([]);
 
-	const authFetch = useAuthFetch();
-
 	const classes = useStyles();
 	const [money, setMoney] = useMoney();
 
 	useAsyncEffect(async () => {
 		try {
-			const items = await authFetch('/api/customer/get-my-items');
+			const { data: items } = await Axios.get('/api/customer/get-my-items');
 			setItems(items);
 		} catch (error) {
 			console.error(error);
@@ -32,16 +30,14 @@ const MyItems: React.FC<MyItemsProps> = () => {
 
 	const onRemove = useCallback(async (id: number) => {
 		try {
-			await authFetch(`/api/customer/remove-item/${id}`, {
-				method: "POST"
-			});
+			await Axios.post(`/api/customer/remove-item/${id}`);
 			const item = items.find(item => item.id === id);
 			setMoney(money => money !== null ? money + (item?.price ?? 0) : null);
 			setItems(items => items.filter(item => item.id !== id));
 		} catch (error) {
 			console.error(error);
 		}
-	}, [authFetch, items]);
+	}, [items]);
 
 	return (
 		<main>

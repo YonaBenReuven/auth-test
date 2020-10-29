@@ -28,6 +28,6 @@ const CustomerHome: React.FC<CustomerHomeProps> = () => {
 }
 
 export default provide(
-	[UserProvider, { input: '/api/customer/get-customer', onError: console.error }],
+	[UserProvider, { url: '/api/customer/get-customer', onError: console.error }],
 	MoneyProvider
 )(CustomerHome);

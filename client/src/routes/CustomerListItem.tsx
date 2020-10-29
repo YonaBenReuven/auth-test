@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined';
 import RemoveCircleOutlinedIcon from '@material-ui/icons/RemoveCircleOutlined';
 import clsx from 'clsx';
-import { useAuthFetch } from '@hilma/auth';
+import Axios from 'axios';
 import { useAsyncEffect } from '@hilma/tools';
 
 import { Customer } from '../types';
@@ -22,8 +22,6 @@ const CustomerListItem: React.FC<CustomerListItemProps> = () => {
 	const history = useHistory();
 	const params = useParams<{ customerId: string }>();
 
-	const authFetch = useAuthFetch();
-
 	const classes = useStyles();
 
 	useEffect(() => {
@@ -33,7 +31,7 @@ const CustomerListItem: React.FC<CustomerListItemProps> = () => {
 	useAsyncEffect(async () => {
 		try {
 			if (customer) return;
-			const data = await authFetch(`/api/customer/get-customers/${params.customerId}`);
+			const { data } = await Axios.get(`/api/customer/get-customers/${params.customerId}`);
 			setCustomer(data);
 		} catch (error) {
 			console.error(error);
@@ -42,7 +40,7 @@ const CustomerListItem: React.FC<CustomerListItemProps> = () => {
 
 	const onMoneyClick = useCallback(async (operator: 'inc' | 'dec') => {
 		try {
-			await authFetch(`/api/customer/update-customer-money/${params.customerId}?operator=${operator}`, { method: "PATCH" });
+			await Axios.patch(`/api/customer/update-customer-money/${params.customerId}?operator=${operator}`);
 			setCustomer(customer => customer ? ({
 				...customer,
 				money: operator === "dec" ? customer.money - 1000 : customer.money + 1000
@@ -50,18 +48,16 @@ const CustomerListItem: React.FC<CustomerListItemProps> = () => {
 		} catch (error) {
 			console.error(error);
 		}
-	}, [authFetch, params.customerId]);
+	}, [params.customerId]);
 
 	const onDeleteClick = useCallback(async () => {
 		try {
-			await authFetch(`/api/customer/delete-customer/${params.customerId}`, {
-				method: "DELETE"
-			});
+			await Axios.delete(`/api/customer/delete-customer/${params.customerId}`);
 			history.push('/customers');
 		} catch (error) {
 			console.error(error);
 		}
-	}, [params.customerId, authFetch, history]);
+	}, [params.customerId, history]);
 
 	if (!customer) return null;
 

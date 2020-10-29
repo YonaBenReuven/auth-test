@@ -4,8 +4,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Axios from 'axios';
 import { useAsyncEffect } from '@hilma/tools';
-import { useAuthFetch } from '@hilma/auth';
 
 import { Item } from '../types';
 import { StoreItem } from '../components';
@@ -16,14 +16,12 @@ interface StoreProps extends RouteComponentProps { }
 const Store: React.FC<StoreProps> = () => {
 	const [items, setItems] = useState<Item[]>([]);
 
-	const authFetch = useAuthFetch();
-
 	const classes = useStyles();
 	const [money, setMoney] = useMoney();
 
 	useAsyncEffect(async () => {
 		try {
-			const items = await authFetch('/api/customer/get-not-bought');
+			const { data: items } = await Axios.get('/api/customer/get-not-bought');
 			setItems(items);
 		} catch (error) {
 			console.error(error);
@@ -32,16 +30,14 @@ const Store: React.FC<StoreProps> = () => {
 
 	const onBuy = useCallback(async (id: number) => {
 		try {
-			await authFetch(`/api/customer/buy-item/${id}`, {
-				method: "POST"
-			});
+			await Axios.post(`/api/customer/buy-item/${id}`);
 			const item = items.find(item => item.id === id);
 			setMoney(money => money !== null ? money - (item?.price ?? 0) : null);
 			setItems(items => items.filter(item => item.id !== id));
 		} catch (error) {
 			console.error(error);
 		}
-	}, [authFetch, items]);
+	}, [items]);
 
 	return (
 		<main>

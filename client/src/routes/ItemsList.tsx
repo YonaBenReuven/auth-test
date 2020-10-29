@@ -14,7 +14,7 @@ import IconButton from '@material-ui/core/IconButton';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import { useAuthFetch } from '@hilma/auth';
+import Axios from 'axios';
 import { useAsyncEffect } from '@hilma/tools';
 
 import { Title } from '../components';
@@ -27,13 +27,11 @@ const ItemsList: React.FC<ItemsListProps> = () => {
 
 	const match = useRouteMatch();
 
-	const authFetch = useAuthFetch();
-
 	const classes = useStyles();
 
 	useAsyncEffect(async () => {
 		try {
-			const items = await authFetch('/api/item/get-items');
+			const { data: items } = await Axios.get('/api/item/get-items');
 			setItems(items);
 		} catch (error) {
 			console.error(error);

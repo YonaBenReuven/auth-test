@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import { useAuthFetch } from '@hilma/auth';
+import Axios from 'axios';
 
 interface AddCustomerProps extends RouteComponentProps { }
 
@@ -17,8 +17,6 @@ const AddCustomer: React.FC<AddCustomerProps> = () => {
 
 	const history = useHistory();
 
-	const authFetch = useAuthFetch();
-
 	const classes = useStyles();
 
 	const handleChange = (setState: React.Dispatch<React.SetStateAction<string>>) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,15 +26,12 @@ const AddCustomer: React.FC<AddCustomerProps> = () => {
 	const handleSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
 		try {
 			event.preventDefault();
-			await authFetch('/api/customer/create-customer', {
-				method: "POST",
-				body: JSON.stringify({ customerName: name, username, password })
-			});
+			await Axios.post('/api/customer/create-customer', { customerName: name, username, password });
 			history.push('/customers');
 		} catch (error) {
 			console.error(error);
 		}
-	}, [name, username, password, history, authFetch]);
+	}, [name, username, password, history]);
 
 	return (
 		<form onSubmit={handleSubmit} className={classes.layout}>

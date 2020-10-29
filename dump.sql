@@ -133,13 +133,13 @@ DROP TABLE IF EXISTS `user_role`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user_role` (
-  `userId` varchar(36) NOT NULL,
-  `roleId` int NOT NULL,
-  PRIMARY KEY (`userId`,`roleId`),
-  KEY `IDX_ab40a6f0cd7d3ebfcce082131f` (`userId`),
-  KEY `IDX_dba55ed826ef26b5b22bd39409` (`roleId`),
-  CONSTRAINT `FK_ab40a6f0cd7d3ebfcce082131fd` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `FK_dba55ed826ef26b5b22bd39409b` FOREIGN KEY (`roleId`) REFERENCES `role` (`id`) ON DELETE CASCADE
+  `user_id` varchar(36) NOT NULL,
+  `role_id` int NOT NULL,
+  PRIMARY KEY (`user_id`,`role_id`),
+  KEY `IDX_ab40a6f0cd7d3ebfcce082131f` (`user_id`),
+  KEY `IDX_dba55ed826ef26b5b22bd39409` (`role_id`),
+  CONSTRAINT `FK_ab40a6f0cd7d3ebfcce082131fd` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_dba55ed826ef26b5b22bd39409b` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

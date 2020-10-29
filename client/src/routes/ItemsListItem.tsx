@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined';
 import RemoveCircleOutlinedIcon from '@material-ui/icons/RemoveCircleOutlined';
 import clsx from 'clsx';
-import { useAuthFetch } from '@hilma/auth';
+import Axios from 'axios';
 import { useAsyncEffect } from '@hilma/tools';
 
 import { Item } from '../types';
@@ -22,8 +22,6 @@ const ItemListItem: React.FC<ItemListItemProps> = () => {
 	const history = useHistory();
 	const params = useParams<{ itemId: string }>();
 
-	const authFetch = useAuthFetch();
-
 	const classes = useStyles();
 
 	useEffect(() => {
@@ -33,7 +31,7 @@ const ItemListItem: React.FC<ItemListItemProps> = () => {
 	useAsyncEffect(async () => {
 		try {
 			if (item) return;
-			const data = await authFetch(`/api/item/get-items/${params.itemId}`);
+			const { data } = await Axios.get(`/api/item/get-items/${params.itemId}`);
 			setItem(data);
 		} catch (error) {
 			console.error(error);
@@ -42,7 +40,7 @@ const ItemListItem: React.FC<ItemListItemProps> = () => {
 
 	const onPriceClick = useCallback(async (operator: 'inc' | 'dec') => {
 		try {
-			await authFetch(`/api/item/update-item-price/${params.itemId}?operator=${operator}`, { method: "PATCH" });
+			await Axios.patch(`/api/item/update-item-price/${params.itemId}?operator=${operator}`);
 			setItem(item => item ? ({
 				...item,
 				price: operator === "dec" ? item.price - 1000 : item.price + 1000
@@ -50,18 +48,16 @@ const ItemListItem: React.FC<ItemListItemProps> = () => {
 		} catch (error) {
 			console.error(error);
 		}
-	}, [params.itemId, authFetch]);
+	}, [params.itemId]);
 
 	const onDeleteClick = useCallback(async () => {
 		try {
-			await authFetch(`/api/item/delete-item/${params.itemId}`, {
-				method: "DELETE"
-			});
+			await Axios.delete(`/api/item/delete-item/${params.itemId}`);
 			history.push('/items');
 		} catch (error) {
 			console.error(error);
 		}
-	}, [params.itemId, authFetch, history]);
+	}, [params.itemId, history]);
 
 	if (!item) return null;
 

@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import { useAuthFetch } from '@hilma/auth';
+import Axios from 'axios';
 
 export interface AddItemProps extends RouteComponentProps { }
 
@@ -15,8 +15,6 @@ const AddItem: React.FC<AddItemProps> = () => {
 	const [price, setPrice] = useState('');
 
 	const history = useHistory();
-
-	const authFetch = useAuthFetch();
 
 	const classes = useStyles();
 
@@ -27,15 +25,12 @@ const AddItem: React.FC<AddItemProps> = () => {
 	const handleSubmit = useCallback(async (event: React.FormEvent<HTMLFormElement>) => {
 		try {
 			event.preventDefault();
-			await authFetch('/api/item/create-item', {
-				method: "POST",
-				body: JSON.stringify({ itemName: name, price: Number(price) })
-			});
+			await Axios.post('/api/item/create-item', { itemName: name, price: Number(price) });
 			history.push('/items');
 		} catch (error) {
 			console.error(error);
 		}
-	}, [name, price, history, authFetch]);
+	}, [name, price, history]);
 
 	return (
 		<form onSubmit={handleSubmit} className={classes.layout}>

@@ -35,5 +35,5 @@ const AdminHome: React.FC<AdminHomeProps> = () => {
 }
 
 export default provide(
-	[UserProvider, { input: '/api/admin/get-admin', onError: console.error }]
+	[UserProvider, { url: '/api/admin/get-admin', onError: console.error }]
 )(AdminHome);
